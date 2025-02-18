@@ -1,7 +1,8 @@
 import numpy as np
 from sklearn.metrics import confusion_matrix
-from tensorflow.keras.utils import plot_model
-from tensorflow.keras.models import load_model
+from tensorflow.keras import RMSprop
+from tensorflow.keras import plot_model
+from tensorflow.keras import load_model
 
 class Model:
     def __init__(self, input_shape, categories_count):
@@ -13,7 +14,11 @@ class Model:
         raise Exception("define_model not implemented yet.")
 
     def _compile_model(self):
-        raise Exception("define_model not implemented yet.")
+        self.model.compile(
+            optimizer=RMSprop(learning_rate=0.001),
+            loss='categorical_crossentropy',
+            metrics=['accuracy'],
+        )
 
     def train_model(self, train_dataset, validation_dataset, epochs):
         history = self.model.fit(
