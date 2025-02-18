@@ -1,8 +1,8 @@
 import numpy as np
 from sklearn.metrics import confusion_matrix
-from tensorflow.keras import RMSprop
-from tensorflow.keras import plot_model
-from tensorflow.keras import load_model
+from tensorflow.keras.optimizers import RMSprop
+from tensorflow.keras.utils import plot_model
+from tensorflow.keras.models import load_model
 
 class Model:
     def __init__(self, input_shape, categories_count):
