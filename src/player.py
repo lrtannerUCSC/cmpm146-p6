@@ -107,8 +107,21 @@ class UserWebcamPlayer:
         # The classification value should be 0, 1, or 2 for neutral, happy or surprise respectively
 
         # return an integer (0, 1 or 2), otherwise the code will throw an error
-        return 1
-        pass
+        
+        # Pre-trained model
+        model = models.load_model('src/TicTacToeModel/game_model.keras')
+    
+        # Resize & normalize the image
+        img_resized = cv2.resize(img, (image_size, image_size))
+        img_resized = img_resized / 255.0
+        img_resized = np.expand_dims(img_resized, axis=0)
+        img_resized = np.expand_dims(img_resized, axis=-1)
+        
+        # Predict the emotion
+        predictions = model.predict(img_resized)
+        emotion = np.argmax(predictions)
+        
+        return emotion
     
     def get_move(self, board_state):
         row, col = None, None
