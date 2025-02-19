@@ -108,7 +108,7 @@ class UserWebcamPlayer:
 
         # return an integer (0, 1 or 2), otherwise the code will throw an error
         
-        # Pre-trained model
+        # Pre-trained model (change me :D! basic_model_10_epochs_timestamp_1739904383.keras is the model it's currently using)
         model = models.load_model('src/TicTacToeModel/game_model.keras')
     
         # Resize & normalize the image
@@ -119,7 +119,7 @@ class UserWebcamPlayer:
         
         # Predict the emotion
         predictions = model.predict(img_resized)
-        emotion = np.argmax(predictions)
+        emotion = np.argmax(predictions) #uses the prediction array to get an integer of 0,1,2 for neutral, happy, surprise
         
         return emotion
     
