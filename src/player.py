@@ -99,9 +99,9 @@ class UserWebcamPlayer:
         # img an np array of size NxN (square), each pixel is a value between 0 to 255
         # you have to resize this to image_size before sending to your model
         # to show the image here, you can use:
-        # import matplotlib.pyplot as plt
-        # plt.imshow(img, cmap='gray', vmin=0, vmax=255)
-        # plt.show()
+        import matplotlib.pyplot as plt
+        plt.imshow(img, cmap='gray', vmin=0, vmax=255)
+        plt.show()
         #
         # You have to use your saved model, use resized img as input, and get one classification value out of it
         # The classification value should be 0, 1, or 2 for neutral, happy or surprise respectively
