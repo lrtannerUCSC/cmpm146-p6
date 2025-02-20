@@ -99,9 +99,9 @@ class UserWebcamPlayer:
         # img an np array of size NxN (square), each pixel is a value between 0 to 255
         # you have to resize this to image_size before sending to your model
         # to show the image here, you can use:
-        import matplotlib.pyplot as plt
-        plt.imshow(img, cmap='gray', vmin=0, vmax=255)
-        plt.show()
+        #import matplotlib.pyplot as plt
+        #plt.imshow(img, cmap='gray', vmin=0, vmax=255)
+        #plt.show()
         #
         # You have to use your saved model, use resized img as input, and get one classification value out of it
         # The classification value should be 0, 1, or 2 for neutral, happy or surprise respectively
@@ -112,37 +112,43 @@ class UserWebcamPlayer:
         model = models.load_model('TicTacToeModel/game_model.keras')
     
         # Resize & normalize the image
-        img_resized = cv2.resize(img, image_size)
+        img_resized = cv2.resize(img, tuple(image_size))
         img_resized = img_resized / 255.0
         
-        img_resized = np.expand_dims(img_resized, axis=-1)  # Add channel dimension
-
+        # Expand dimensions to match the model's expected input shape
         # Stack the image to have 3 channels
-        img_resized = np.repeat(img_resized, 3, axis=-1)
+        img_resized = np.repeat(img_resized[:, :, np.newaxis], 3, axis=-1)
 
         # Expand dimensions to match the model's expected input shape
         img_resized = np.expand_dims(img_resized, axis=0)
 
+        #print("Image shape after stacking channels:", img_resized.shape)
+
+        # Visualize the image after stacking channels
+        #plt.imshow(img_resized[0])
+        #plt.title('Image After Stacking Channels')
+        #plt.show()
 
         # Visualize the input image
-        plt.imshow(img_resized[0], cmap='gray', vmin=0, vmax=1)
-        plt.title('Input Image')
-        plt.show()
+        #plt.imshow(img_resized[0], cmap=None)
+        #plt.title('Input Image')
+        #plt.show()
+        #print("Processed image shape:", img_resized.shape)  
         # Predict the emotion
-        predictions = model.predict(img_resized)
-        #use this to bugtest
-        print("Predictions:", predictions)
-        print("Argmax of predictions:", np.argmax(predictions))
+        predictions = model.predict(img_resized)  # Predict the emotion of the image
+        # Use this to bugtest
+        #print("Predictions:", predictions)
+        #print("Argmax of predictions:", np.argmax(predictions))
 
         emotion = int(np.argmax(predictions)) #uses the prediction array to get an integer of 0,1,2 for neutral, happy, surprise
-        #used this to bugtest
+        # Used this to bugtest
         #if emotion not in [0, 1, 2]:
         #    raise ValueError("Invalid emotion prediction: {}".format(emotion))
 
 
-        #stinky code requires it to be casted as an int...
-        #it gives the right number without int womp womp
-        print("Emotion:", emotion)
+        # Stinky code requires it to be casted as an int...
+        # It gives the right number without int womp womp
+        #print("Emotion:", emotion)
         return emotion
 
     def get_move(self, board_state):
