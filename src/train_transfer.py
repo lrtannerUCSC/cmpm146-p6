@@ -8,7 +8,7 @@ import time
 # Your code should change these values based on your choice of dataset for the transfer task
 # -------------
 input_shape = (image_size[0], image_size[1], 3)
-categories_count = 3
+categories_count = 2
 # -------------
 
 models = {
@@ -18,23 +18,38 @@ models = {
 
 def plot_history_diff(initial_hist, transfered_hist):
     val_acc_initial = initial_hist.history['val_accuracy']
-    val_acc_tranfered = transfered_hist.history['val_accuracy']
+    val_acc_transfered = transfered_hist.history['val_accuracy']
+    val_loss_initial = initial_hist.history['val_loss']
+    val_loss_transfered = transfered_hist.history['val_loss']
 
     epochs_initial = range(1, len(val_acc_initial) + 1)
     epochs_transfered = range(1, len(val_acc_initial) + 1)
     assert epochs_initial == epochs_transfered, "The two models have been tried with different epochs"
 
-    plt.figure(figsize = (24, 6))
-    plt.plot(epochs_initial, val_acc_initial, 'b', label = 'Initial Model Accuracy')
-    plt.plot(epochs_initial, val_acc_tranfered, 'r', label = 'Transfered Model Accuracy')
+    plt.figure(figsize=(24, 6))
+    plt.subplot(1, 2, 1)
+    plt.plot(epochs_initial, val_acc_initial, 'b', label='Initial Model Accuracy')
+    plt.plot(epochs_initial, val_acc_transfered, 'r', label='Transfered Model Accuracy')
     plt.grid(True)
     plt.legend()
     plt.xlabel('Epoch')
+    plt.ylabel('Validation Accuracy')
+    plt.title('Validation Accuracy Comparison')
+
+    plt.subplot(1, 2, 2)
+    plt.plot(epochs_initial, val_loss_initial, 'b', label='Initial Model Loss')
+    plt.plot(epochs_initial, val_loss_transfered, 'r', label='Transfered Model Loss')
+    plt.grid(True)
+    plt.legend()
+    plt.xlabel('Epoch')
+    plt.ylabel('Validation Loss')
+    plt.title('Validation Loss Comparison')
+
     plt.show()
 
 if __name__ == "__main__":
     # Your code should change the number of epochs
-    epochs = 3
+    epochs = 10
     print('* Data preprocessing')
     train_dataset, validation_dataset, test_dataset = get_transfer_datasets()
     histories = []
