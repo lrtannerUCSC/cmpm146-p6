@@ -109,20 +109,42 @@ class UserWebcamPlayer:
         # return an integer (0, 1 or 2), otherwise the code will throw an error
         
         # Pre-trained model (change me :D! basic_model_10_epochs_timestamp_1739904383.keras is the model it's currently using)
-        model = models.load_model('src/TicTacToeModel/game_model.keras')
+        model = models.load_model('TicTacToeModel/game_model.keras')
     
         # Resize & normalize the image
-        img_resized = cv2.resize(img, (image_size, image_size))
+        img_resized = cv2.resize(img, image_size)
         img_resized = img_resized / 255.0
-        img_resized = np.expand_dims(img_resized, axis=0)
-        img_resized = np.expand_dims(img_resized, axis=-1)
         
+        img_resized = np.expand_dims(img_resized, axis=-1)  # Add channel dimension
+
+        # Stack the image to have 3 channels
+        img_resized = np.repeat(img_resized, 3, axis=-1)
+
+        # Expand dimensions to match the model's expected input shape
+        img_resized = np.expand_dims(img_resized, axis=0)
+
+
+        # Visualize the input image
+        plt.imshow(img_resized[0], cmap='gray', vmin=0, vmax=1)
+        plt.title('Input Image')
+        plt.show()
         # Predict the emotion
         predictions = model.predict(img_resized)
-        emotion = np.argmax(predictions) #uses the prediction array to get an integer of 0,1,2 for neutral, happy, surprise
-        
+        #use this to bugtest
+        print("Predictions:", predictions)
+        print("Argmax of predictions:", np.argmax(predictions))
+
+        emotion = int(np.argmax(predictions)) #uses the prediction array to get an integer of 0,1,2 for neutral, happy, surprise
+        #used this to bugtest
+        #if emotion not in [0, 1, 2]:
+        #    raise ValueError("Invalid emotion prediction: {}".format(emotion))
+
+
+        #stinky code requires it to be casted as an int...
+        #it gives the right number without int womp womp
+        print("Emotion:", emotion)
         return emotion
-    
+
     def get_move(self, board_state):
         row, col = None, None
         while row is None:
