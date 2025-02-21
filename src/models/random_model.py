@@ -21,8 +21,8 @@ class RandomModel(Model):
         base_model = models.load_model('TransferModel/transfer_model.keras')
         
         # Freeze the weights of the loaded model to make sure the training doesn't affect them
-        for layer in base_model.layers:
-            layer.trainable = False
+        #for layer in base_model.layers:
+        #    layer.trainable = False
         
         # Randomize the weights of the loaded model
         self._randomize_layers(base_model)

@@ -34,7 +34,8 @@ def plot_history_diff(initial_hist, transfered_hist):
     plt.legend()
     plt.xlabel('Epoch')
     plt.ylabel('Validation Accuracy')
-    plt.title('Validation Accuracy Comparison')
+    plt.title('Far Transfer from Facial Recognition to dog-vs-cat')
+    #plt.title('Validation Accuracy Comparison')
 
     plt.subplot(1, 2, 2)
     plt.plot(epochs_initial, val_loss_initial, 'b', label='Initial Model Loss')
